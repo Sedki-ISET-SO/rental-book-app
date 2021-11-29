@@ -1,0 +1,12 @@
+<header class="bg-dark text-danger my-0 py-5">
+    {% if app.user %}
+        <a href="{{path('app_logout')}}" class="btn btn-danger text-white float-end me-2">Log Out</a>
+    {% else %}
+        <a href="{{path('app_login')}}" class="btn btn-danger text-white float-end me-2">Log In</a>
+        <a href="{{path('app_register')}}" class="btn btn-danger text-white float-end me-2">Register</a>
+    {% endif %}
+    <section class="container text-center">
+        <h1>Rental Book, for hosting and holiday searching</h1>
+        <p>all what you need in one place!</p>
+    </section>
+</header>

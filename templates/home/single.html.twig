@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <h2>{{listing.name}}</h2>
+    <div class="card my-3">
+        <div class="card-header">
+            Published on : {{listing.published|date('d/m/Y')}} at {{listing.published|date('H:i')}}
+            By : {{listing.user.firstname ~ " " ~ listing.user.lastname}}
+        </div>
+        <img src="{{ listing.pictureUrl }}" alt="" style="height: auto; width: 350px; display: block">
+        <div class="card-body">
+            <h5 class="card-title">{{listing.price}}</h5>
+            <p class="card-text">{{listing.description}}</p>
+        </div>
+    </div>
+{% endblock %}
