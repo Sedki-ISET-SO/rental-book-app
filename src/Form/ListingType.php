@@ -3,11 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Listing;
+use App\Form\ListingAmenityType;
+use App\Form\ListingPictureType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ListingType extends AbstractType
 {
@@ -16,12 +19,6 @@ class ListingType extends AbstractType
         $builder
             ->add('name', null, [
                 "label" => "Your Listing Name:",
-            ])
-            ->add('category', null, [
-                "label" => "Listing Category:"
-            ])
-            ->add('pictureUrl', null, [
-                "label" => "Listing Picture:"
             ])
             ->add('description', null, [
                 "label" => "Listing Description:"
@@ -35,50 +32,38 @@ class ListingType extends AbstractType
             ->add('guests', null, [
                 "label" => "Listing Total Guests Allowed:"
             ])
-            ->add('location', null, [
-                "label" => "Listing Location:"
+            ->add('latitude', null, [
+                "label" => "Listing Latitude:"
             ])
-            ->add('petFriendlySpace', ChoiceType::class, [
-                'choices'  => [
-                    'Yes' => true,
-                    'No' => false,
-                ],
+            ->add('longitude', null, [
+                "label" => "Listing Longitude:"
             ])
-            ->add('wifi', ChoiceType::class, [
-                'choices'  => [
-                    'Yes' => true,
-                    'No' => false,
-                ],
+            ->add('pictures', CollectionType::class, [
+                'entry_type' => ListingPictureType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'required' => false,
+                'label'=> "Listing Picutres:",
+                'by_reference' => false,
+                'disabled' => false,
             ])
-            ->add('freeParking', ChoiceType::class, [
-                'choices'  => [
-                    'Yes' => true,
-                    'No' => false,
-                ],
+            ->add('availablities', CollectionType::class, [
+                'entry_type' => ListingAvailabilityType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'required' => false,
+                'label'=> "Listing Availability Dates",
+                'by_reference' => false,
+                'disabled' => false,
             ])
-            ->add('pool', ChoiceType::class, [
-                'choices'  => [
-                    'Yes' => true,
-                    'No' => false,
-                ],
-            ])
-            ->add('airConditioning', ChoiceType::class, [
-                'choices'  => [
-                    'Yes' => true,
-                    'No' => false,
-                ],
-            ])
-            ->add('washer', ChoiceType::class, [
-                'choices'  => [
-                    'Yes' => true,
-                    'No' => false,
-                ],
-            ])
-            ->add('tv', ChoiceType::class, [
-                'choices'  => [
-                    'Yes' => true,
-                    'No' => false,
-                ],
+            ->add('amenities', CollectionType::class, [
+                'entry_type' => ListingAmenityType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'required' => false,
+                'label'=> "Listing Amenities:",
+                'by_reference' => false,
+                'disabled' => false,
             ])
             ->add('enregistrer', SubmitType::class, [
                 "attr" => ["class" => "bg-danger text-white"],

@@ -25,16 +25,6 @@ class Listing
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $category;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $pictureUrl;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $description;
@@ -55,44 +45,14 @@ class Listing
     private $guests;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="float")
      */
-    private $location;
+    private $latitude;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="float")
      */
-    private $petFriendlySpace;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $wifi;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $freeParking;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $pool;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $airConditioning;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $washer;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $tv;
+    private $longitude;
 
     /**
      * @ORM\Column(type="datetime")
@@ -105,8 +65,38 @@ class Listing
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ListingCategory::class, inversedBy="listings")
+     */
+    private $listingCategory;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ListingAmenity::class, mappedBy="listing")
+     */
+    private $listingAmenities;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="listing")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $ratings;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ListingPicture::class, mappedBy="listing")
+     */
+    private $pictures;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ListingAvailability::class, mappedBy="listing")
+     */
+    private $listingAvailabilities;
+
     public function __construct()
     {
+        $this->listingAmenities = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
+        $this->listingAvailabilities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,30 +112,6 @@ class Listing
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(string $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    public function getPictureUrl(): ?string
-    {
-        return $this->pictureUrl;
-    }
-
-    public function setPictureUrl(string $pictureUrl): self
-    {
-        $this->pictureUrl = $pictureUrl;
 
         return $this;
     }
@@ -198,98 +164,26 @@ class Listing
         return $this;
     }
 
-    public function getLocation(): ?string
+    public function getLatitude(): ?float
     {
-        return $this->location;
+        return $this->latitude;
     }
 
-    public function setLocation(string $location): self
+    public function setLatitude(float $latitude): self
     {
-        $this->location = $location;
+        $this->latitude = $latitude;
 
         return $this;
     }
 
-    public function getPetFriendlySpace(): ?bool
+    public function getLongitude(): ?float
     {
-        return $this->petFriendlySpace;
+        return $this->longitude;
     }
 
-    public function setPetFriendlySpace(bool $petFriendlySpace): self
+    public function setLongitude(float $longitude): self
     {
-        $this->petFriendlySpace = $petFriendlySpace;
-
-        return $this;
-    }
-
-    public function getWifi(): ?bool
-    {
-        return $this->wifi;
-    }
-
-    public function setWifi(bool $wifi): self
-    {
-        $this->wifi = $wifi;
-
-        return $this;
-    }
-
-    public function getFreeParking(): ?bool
-    {
-        return $this->freeParking;
-    }
-
-    public function setFreeParking(bool $freeParking): self
-    {
-        $this->freeParking = $freeParking;
-
-        return $this;
-    }
-
-    public function getPool(): ?bool
-    {
-        return $this->pool;
-    }
-
-    public function setPool(bool $pool): self
-    {
-        $this->pool = $pool;
-
-        return $this;
-    }
-
-    public function getAirConditioning(): ?bool
-    {
-        return $this->airConditioning;
-    }
-
-    public function setAirConditioning(bool $airConditioning): self
-    {
-        $this->airConditioning = $airConditioning;
-
-        return $this;
-    }
-
-    public function getWasher(): ?bool
-    {
-        return $this->washer;
-    }
-
-    public function setWasher(bool $washer): self
-    {
-        $this->washer = $washer;
-
-        return $this;
-    }
-
-    public function getTv(): ?bool
-    {
-        return $this->tv;
-    }
-
-    public function setTv(bool $tv): self
-    {
-        $this->tv = $tv;
+        $this->longitude = $longitude;
 
         return $this;
     }
@@ -314,6 +208,168 @@ class Listing
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getListingCategory(): ?ListingCategory
+    {
+        return $this->listingCategory;
+    }
+
+    public function setListingCategory(?ListingCategory $listingCategory): self
+    {
+        $this->listingCategory = $listingCategory;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ListingAmenity[]
+     */
+    public function getListingAmenities(): Collection
+    {
+        return $this->listingAmenities;
+    }
+
+    public function addListingAmenity(ListingAmenity $listingAmenity): self
+    {
+        if (!$this->listingAmenities->contains($listingAmenity)) {
+            $this->listingAmenities[] = $listingAmenity;
+            $listingAmenity->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeListingAmenity(ListingAmenity $listingAmenity): self
+    {
+        if ($this->listingAmenities->removeElement($listingAmenity)) {
+            // set the owning side to null (unless already changed)
+            if ($listingAmenity->getListing() === $this) {
+                $listingAmenity->setListing(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rating[]
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getListing() === $this) {
+                $rating->setListing(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ListingPicture[]
+     */
+    public function getListingPictures(): Collection
+    {
+        return $this->listingPictures;
+    }
+
+    public function addListingPicture(ListingPicture $listingPicture): self
+    {
+        if (!$this->listingPictures->contains($listingPicture)) {
+            $this->listingPictures[] = $listingPicture;
+            $listingPicture->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeListingPicture(ListingPicture $listingPicture): self
+    {
+        if ($this->listingPictures->removeElement($listingPicture)) {
+            // set the owning side to null (unless already changed)
+            if ($listingPicture->getListing() === $this) {
+                $listingPicture->setListing(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ListingPicture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(ListingPicture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(ListingPicture $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getListing() === $this) {
+                $picture->setListing(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ListingAvailability[]
+     */
+    public function getListingAvailabilities(): Collection
+    {
+        return $this->listingAvailabilities;
+    }
+
+    public function addListingAvailability(ListingAvailability $listingAvailability): self
+    {
+        if (!$this->listingAvailabilities->contains($listingAvailability)) {
+            $this->listingAvailabilities[] = $listingAvailability;
+            $listingAvailability->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeListingAvailability(ListingAvailability $listingAvailability): self
+    {
+        if ($this->listingAvailabilities->removeElement($listingAvailability)) {
+            // set the owning side to null (unless already changed)
+            if ($listingAvailability->getListing() === $this) {
+                $listingAvailability->setListing(null);
+            }
+        }
 
         return $this;
     }

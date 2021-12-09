@@ -47,9 +47,29 @@ class ListingController extends AbstractController
         $listing = new Listing();
         $form = $this->createForm(ListingType::class, $listing);
         $form->handleRequest($request);
+        
         if($form->isSubmitted() && $form->isValid()) {
             $listing->setPublished(new \DateTime());
             $listing->setUser($this->getUser());
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            foreach ($form->getData()->getPictures() as $pic) {
+                $entityManager->persist($pic);
+
+                $listing->addPicture($pic);
+            }
+
+            foreach ($form->getData()->getListingAvailabilities() as $availability) {
+                $entityManager->persist($availability);
+
+                $listing->addListingAvailability($availability);
+            }
+
+            foreach ($form->getData()->getListingAmenities() as $amenity) {
+                $entityManager->persist($amenity);
+
+                $listing->addListingAmenity($amenity);
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($listing);
