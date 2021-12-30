@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Listing;
 use App\Form\ListingType;
+use App\Entity\ListingPicture;
+use App\Form\ListingPictureType;
 use App\Form\RegistrationFormType;
 use App\Repository\ListingRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @IsGranted("IS_AUTHENTICATED_FULLY")
@@ -25,7 +27,7 @@ class ListingController extends AbstractController
     {
         $listing = $listingRepository->getSingleListing($id);
 
-        return $this->render('home/single.html.twig', [
+        return $this->render('listing/single.html.twig', [
             "listing" => $listing
         ]);
     }
@@ -53,32 +55,43 @@ class ListingController extends AbstractController
             $listing->setUser($this->getUser());
             
             $entityManager = $this->getDoctrine()->getManager();
-            foreach ($form->getData()->getPictures() as $pic) {
-                $entityManager->persist($pic);
-
-                $listing->addPicture($pic);
-            }
-
-            foreach ($form->getData()->getListingAvailabilities() as $availability) {
-                $entityManager->persist($availability);
-
-                $listing->addListingAvailability($availability);
-            }
-
-            foreach ($form->getData()->getListingAmenities() as $amenity) {
-                $entityManager->persist($amenity);
-
-                $listing->addListingAmenity($amenity);
-            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($listing);
             $entityManager->flush();
 
+            // return $this->redirectToRoute('index');
+            return $this->render('listing/listingPictures.html.twig', ['id' => $id = $listing->getId()]);
+        }
+
+        return $this->render('listing/newListing.html.twig', [
+            "form" => $form->createView()
+        ]);
+    }
+
+
+    /**
+     * @Route("/home/listing/new/picture", methods={"GET", "POST"}, name="newListingPicture")
+     */
+    public function newListingPicture(Request $request): Response
+    {
+        $listingPicture = new ListingPicture();
+        $form = $this->createForm(ListingPictureType::class, $listingPicture);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+            $listingPicture->setName("file");
+            
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($listingPicture);
+            $entityManager->flush();
+
             return $this->redirectToRoute('index');
         }
 
-        return $this->render('home/newListing.html.twig', [
+        return $this->render('listing/ListingPictures.html.twig', [
             "form" => $form->createView()
         ]);
     }

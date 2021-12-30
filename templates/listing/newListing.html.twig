@@ -6,6 +6,9 @@
     <h2>Post new listing:</h2>
 
     {{ form_start(form) }}
+        {{ form_label(form.listingCategory) }}
+        {{ form_widget(form.listingCategory) }}
+
         {{ form_label(form.name) }}
         {{ form_widget(form.name) }}
 
@@ -26,74 +29,9 @@
 
         {{ form_label(form.longitude) }}
         {{ form_widget(form.longitude) }}
-
-        <label>Add new listing pictures</label>
-        <ul 
-            id="pictures-fields-list"
-            data-prototype="{{ form_widget(form.pictures.vars.prototype)|e }}"
-            data-widget-tags="{{ '<li></li>'|e }}"
-            data-widget-counter="{{ form.pictures|length }}"
-        >
-            {% for picField in form.pictures %}
-                <li>
-                    {{ form_errors(picField) }}
-                    {{ form_widget(picField) }}
-                </li>
-            {% endfor %}
-        </ul>
-        <button 
-            type="button"
-            class="add-another-collection"
-            data-list-selector="#pictures-fields-list">Add another picture
-        </button>
-
         <br>
-
-        <label>Add new listing availability dates</label>
-        <ul 
-            id="availablities-fields-list"
-            data-prototype="{{ form_widget(form.availablities.vars.prototype)|e }}"
-            data-widget-tags="{{ '<li></li>'|e }}"
-            data-widget-counter="{{ form.availablities|length }}"
-        >
-            {% for availabilityField in form.availablities %}
-                <li>
-                    {{ form_errors(availabilityField) }}
-                    {{ form_widget(availabilityField) }}
-                </li>
-            {% endfor %}
-        </ul>
-        <button 
-            type="button"
-            class="add-another-collection"
-            data-list-selector="#availablities-fields-list">Set another availability dates
-        </button>
-
-        <br>
-
-        <label>Add new listing amenities</label>
-        <ul 
-            id="amenities-fields-list"
-            data-prototype="{{ form_widget(form.amenities.vars.prototype)|e }}"
-            data-widget-tags="{{ '<li></li>'|e }}"
-            data-widget-counter="{{ form.amenities|length }}"
-        >
-            {% for amenityField in form.amenities %}
-                <li>
-                    {{ form_errors(amenityField) }}
-                    {{ form_widget(amenityField) }}
-                </li>
-            {% endfor %}
-        </ul>
-        <button 
-            type="button"
-            class="add-another-collection"
-            data-list-selector="#amenities-fields-list">Add another amenity
-        </button>
-
-        <br>
-
+        
         {{ form_widget(form.enregistrer) }}
-    {{ form_end(form) }}
+    {{ form_end(form) }} 
 
 {% endblock %}

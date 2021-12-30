@@ -9,9 +9,6 @@
             Published on : {{listing.published|date('d/m/Y')}} at {{listing.published|date('H:i')}}
             By : {{listing.user.firstname ~ " " ~ listing.user.lastname}}
         </div>
-        {% for pic in listing.pictures %}
-            <img src="/uploads/{{ pic.name }}" alt="" style="height: auto; width: 350px; display: block">
-        {% endfor %}
         <div class="card-body">
             <h5 class="card-title">{{listing.price}}</h5>
             <p class="card-text">{{listing.description}}</p>

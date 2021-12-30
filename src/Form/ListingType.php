@@ -17,6 +17,9 @@ class ListingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('listingCategory', null, [
+                "label" => "Your Listing Name:",
+            ])
             ->add('name', null, [
                 "label" => "Your Listing Name:",
             ])
@@ -37,33 +40,6 @@ class ListingType extends AbstractType
             ])
             ->add('longitude', null, [
                 "label" => "Listing Longitude:"
-            ])
-            ->add('pictures', CollectionType::class, [
-                'entry_type' => ListingPictureType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'required' => false,
-                'label'=> "Listing Picutres:",
-                'by_reference' => false,
-                'disabled' => false,
-            ])
-            ->add('availablities', CollectionType::class, [
-                'entry_type' => ListingAvailabilityType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'required' => false,
-                'label'=> "Listing Availability Dates",
-                'by_reference' => false,
-                'disabled' => false,
-            ])
-            ->add('amenities', CollectionType::class, [
-                'entry_type' => ListingAmenityType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'required' => false,
-                'label'=> "Listing Amenities:",
-                'by_reference' => false,
-                'disabled' => false,
             ])
             ->add('enregistrer', SubmitType::class, [
                 "attr" => ["class" => "bg-danger text-white"],
