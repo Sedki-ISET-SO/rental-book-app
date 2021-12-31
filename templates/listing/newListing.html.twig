@@ -29,31 +29,81 @@
 
         {{ form_label(form.longitude) }}
         {{ form_widget(form.longitude) }}
-
-        <h3>Amenities</h3>
-        <style>
-            .disabled {
-                pointer-events:none; //This makes it not clickable
-                opacity:0.6;         //This grays it out to look disabled
-            }
-            li {
-                list-style-type: none;
-            }
-            #listing_listingAmenities_0_name, #listing_listingAmenities_1_name  {
-                pointer-events:none;
-                color:#AAA;
-                background:#F5F5F5;
-            }
-        </style>
-        <ul class="listingAmenities">
-        {% for amenity in form.listingAmenities %}
-            <li>{{ form_row(amenity.checked) }}</li>
-            <li class="disabled">{{ form_row(amenity.name) }}</li>
-        {% endfor %}
+                
+        <br>
+        <label for="listingAmenities">Amenities</label>
+        <ul class="listingAmenities" 
+            data-index="{{ form.listingAmenities|length > 0 ? form.listingAmenities|last.vars.name + 1 : 0 }}" 
+            data-prototype="{{ form_widget(form.listingAmenities.vars.prototype)|e('html_attr') }}"
+            style="list-style-type:none;"
+        >
         </ul>
         <br>
         
         {{ form_widget(form.enregistrer) }}
     {{ form_end(form) }} 
+    <script>
+        const addTagLink = document.createElement('button')
+        addTagLink.classList.add('add_tag_list')
+        addTagLink.innerText = 'Add new amenity'
+        addTagLink.dataset.collectionHolderClass = 'listingAmenities'
 
+        const newLinkLi = document.createElement('li').append(addTagLink)
+
+        const collectionHolder = document.querySelector('ul.listingAmenities')
+        collectionHolder.appendChild(addTagLink)
+
+        const addFormToCollection = (e) => {
+            e.preventDefault();
+            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+            const item = document.createElement('li');
+
+            item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                /__name__/g,
+                collectionHolder.dataset.index
+                );
+
+            collectionHolder.appendChild(item);
+
+            collectionHolder.dataset.index++;
+        }
+
+        addTagLink.addEventListener("click", addFormToCollection)
+    </script>
+    <style>
+        .add_tag_list{
+            box-sizing: border-box;
+            -webkit-appearance: none;
+                -moz-appearance: none;
+                    appearance: none;
+            background-color: transparent;
+            border: 2px solid #e74c3c;
+            border-radius: 0.6em;
+            color: #e74c3c;
+            cursor: pointer;
+            display: flex;
+            align-self: center;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1;
+            margin: 20px;
+            padding: 1.2em 2.8em;
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 700;
+        }
+
+        .add_tag_list:hover, .add_tag_list:focus {
+            color: #fff;
+            background-image: linear-gradient(45deg, #f1c40f 50%, transparent 88%);
+            outline: 0;
+        }
+    </style>
 {% endblock %}
+

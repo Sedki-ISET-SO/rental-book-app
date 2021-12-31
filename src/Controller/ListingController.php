@@ -48,12 +48,12 @@ class ListingController extends AbstractController
     public function newListing(Request $request): Response
     {
         $listing = new Listing();
-        $amenityOne = new ListingAmenity();
+        // $amenityOne = new ListingAmenity();
 
-        $amenityOne->setName("Wifi");
-        $amenityOne->setChecked(True);
-        $listing->getListingAmenities()->add($amenityOne);
-        $amenityOne->setListing($listing);
+        // $amenityOne->setName("Wifi");
+        // $amenityOne->setChecked(True);
+        // $listing->getListingAmenities()->add($amenityOne);
+        // $amenityOne->setListing($listing);
 
         $form = $this->createForm(ListingType::class, $listing);
         $form->handleRequest($request);
@@ -61,13 +61,18 @@ class ListingController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $listing->setPublished(new \DateTime());
             $listing->setUser($this->getUser());
-
+            
             $entityManager = $this->getDoctrine()->getManager();
+
+            $amenities = $form->get('listingAmenities')->getData();
+            foreach ($amenities as $amenity) {
+                $listing->addListingAmenity($amenity);
+                $amenity->setListing($listing);
+                $entityManager->persist($amenity);
+            }
 
             $entityManager->persist($listing);
             
-            $entityManager->persist($amenityOne);
-
             $entityManager->flush();
 
             return $this->redirectToRoute('index');

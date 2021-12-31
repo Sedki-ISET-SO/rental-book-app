@@ -44,11 +44,11 @@ class ListingType extends AbstractType
             ->add('listingAmenities', CollectionType::class, [
                 'entry_type' => ListingAmenityType::class,
                 'entry_options' => ['label' => false],
-                'by_reference' => false,
-                // this allows the creation of new forms and the prototype too
                 'allow_add' => true,
-                // self explanatory, this one allows the form to be removed
-                'allow_delete' => true
+                'by_reference' => false,
+                'allow_delete' => true,
+                'required' => true,
+                'label' => false
             ])
             ->add('enregistrer', SubmitType::class, [
                 "attr" => ["class" => "bg-danger text-white"],
