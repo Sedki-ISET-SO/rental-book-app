@@ -11,7 +11,14 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">{{listing.price}}</h5>
+            <h6 class="card-title">{{listing.name}}</h6>
             <p class="card-text">{{listing.description}}</p>
+            <ul class="listingAmenities">
+                {% for amenity in listing.listingAmenities %}
+                    <li>{{ amenity.name }}</li>
+                    <li>{{ amenity.checked }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}

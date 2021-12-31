@@ -15,6 +15,9 @@ class ListingAmenityType extends AbstractType
             ->add('name', null, [
                 "label" => "Listing Amenity Name:"
             ])
+            ->add('checked', null, [
+                "label" => ""
+            ])
         ;
     }
 

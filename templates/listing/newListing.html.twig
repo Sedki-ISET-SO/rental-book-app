@@ -29,6 +29,28 @@
 
         {{ form_label(form.longitude) }}
         {{ form_widget(form.longitude) }}
+
+        <h3>Amenities</h3>
+        <style>
+            .disabled {
+                pointer-events:none; //This makes it not clickable
+                opacity:0.6;         //This grays it out to look disabled
+            }
+            li {
+                list-style-type: none;
+            }
+            #listing_listingAmenities_0_name, #listing_listingAmenities_1_name  {
+                pointer-events:none;
+                color:#AAA;
+                background:#F5F5F5;
+            }
+        </style>
+        <ul class="listingAmenities">
+        {% for amenity in form.listingAmenities %}
+            <li>{{ form_row(amenity.checked) }}</li>
+            <li class="disabled">{{ form_row(amenity.name) }}</li>
+        {% endfor %}
+        </ul>
         <br>
         
         {{ form_widget(form.enregistrer) }}

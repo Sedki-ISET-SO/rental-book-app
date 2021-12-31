@@ -18,28 +18,40 @@ class ListingAmenity
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checked;
 
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="listingAmenities")
      */
     private $listing;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getName(): ?bool
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(bool $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getChecked(): ?bool
+    {
+        return $this->checked;
+    }
+
+    public function setChecked(bool $checked): self
+    {
+        $this->checked = $checked;
 
         return $this;
     }
@@ -54,5 +66,10 @@ class ListingAmenity
         $this->listing = $listing;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+    return (string) $this->id;
     }
 }

@@ -87,7 +87,7 @@ class Listing
     private $pictures;
 
     /**
-     * @ORM\OneToMany(targetEntity=ListingAvailability::class, mappedBy="listing")
+     * @ORM\OneToMany(targetEntity=ListingAvailability::class, mappedBy="listing", cascade={"persist", "remove"})
      */
     private $listingAvailabilities;
 

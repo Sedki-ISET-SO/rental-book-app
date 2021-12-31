@@ -18,7 +18,7 @@ class ListingType extends AbstractType
     {
         $builder
             ->add('listingCategory', null, [
-                "label" => "Your Listing Name:",
+                "label" => "Your Listing Category:",
             ])
             ->add('name', null, [
                 "label" => "Your Listing Name:",
@@ -40,6 +40,15 @@ class ListingType extends AbstractType
             ])
             ->add('longitude', null, [
                 "label" => "Listing Longitude:"
+            ])
+            ->add('listingAmenities', CollectionType::class, [
+                'entry_type' => ListingAmenityType::class,
+                'entry_options' => ['label' => false],
+                'by_reference' => false,
+                // this allows the creation of new forms and the prototype too
+                'allow_add' => true,
+                // self explanatory, this one allows the form to be removed
+                'allow_delete' => true
             ])
             ->add('enregistrer', SubmitType::class, [
                 "attr" => ["class" => "bg-danger text-white"],

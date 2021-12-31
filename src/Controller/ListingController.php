@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Listing;
 use App\Form\ListingType;
+use App\Entity\ListingAmenity;
 use App\Entity\ListingPicture;
 use App\Form\ListingPictureType;
 use App\Form\RegistrationFormType;
@@ -47,51 +48,32 @@ class ListingController extends AbstractController
     public function newListing(Request $request): Response
     {
         $listing = new Listing();
+        $amenityOne = new ListingAmenity();
+
+        $amenityOne->setName("Wifi");
+        $amenityOne->setChecked(True);
+        $listing->getListingAmenities()->add($amenityOne);
+        $amenityOne->setListing($listing);
+
         $form = $this->createForm(ListingType::class, $listing);
         $form->handleRequest($request);
         
         if($form->isSubmitted() && $form->isValid()) {
             $listing->setPublished(new \DateTime());
             $listing->setUser($this->getUser());
-            
-            $entityManager = $this->getDoctrine()->getManager();
 
             $entityManager = $this->getDoctrine()->getManager();
+
             $entityManager->persist($listing);
-            $entityManager->flush();
-
-            // return $this->redirectToRoute('index');
-            return $this->render('listing/listingPictures.html.twig', ['id' => $id = $listing->getId()]);
-        }
-
-        return $this->render('listing/newListing.html.twig', [
-            "form" => $form->createView()
-        ]);
-    }
-
-
-    /**
-     * @Route("/home/listing/new/picture", methods={"GET", "POST"}, name="newListingPicture")
-     */
-    public function newListingPicture(Request $request): Response
-    {
-        $listingPicture = new ListingPicture();
-        $form = $this->createForm(ListingPictureType::class, $listingPicture);
-        $form->handleRequest($request);
-        
-        if($form->isSubmitted() && $form->isValid()) {
-            $listingPicture->setName("file");
             
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($amenityOne);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($listingPicture);
             $entityManager->flush();
 
             return $this->redirectToRoute('index');
         }
 
-        return $this->render('listing/ListingPictures.html.twig', [
+        return $this->render('listing/newListing.html.twig', [
             "form" => $form->createView()
         ]);
     }
