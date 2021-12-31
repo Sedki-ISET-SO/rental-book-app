@@ -50,6 +50,15 @@ class ListingType extends AbstractType
                 'required' => true,
                 'label' => false
             ])
+            ->add('listingAvailabilities', CollectionType::class, [
+                'entry_type' => ListingAvailabilityType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+                'required' => true,
+                'label' => false
+            ])
             ->add('enregistrer', SubmitType::class, [
                 "attr" => ["class" => "bg-danger text-white"],
                 'row_attr' => ['class' => 'text-center']

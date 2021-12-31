@@ -71,6 +71,13 @@ class ListingController extends AbstractController
                 $entityManager->persist($amenity);
             }
 
+            $availabilities = $form->get('listingAvailabilities')->getData();
+            foreach ($availabilities as $availability) {
+                $listing->addListingAvailability($availability);
+                $availability->setListing($listing);
+                $entityManager->persist($availability);
+            }
+
             $entityManager->persist($listing);
             
             $entityManager->flush();
