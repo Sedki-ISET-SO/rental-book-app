@@ -15,13 +15,7 @@ class ListingPictureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('file',FileType::class, [
-                'label'=> "Listing Picture:"
-            ])
-            ->add('enregistrer', SubmitType::class, [
-                "attr" => ["class" => "bg-danger text-white"],
-                'row_attr' => ['class' => 'text-center']
-            ])
+            ->add('file',VichFileType::class)    
         ;
     }
 

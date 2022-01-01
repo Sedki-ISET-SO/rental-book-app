@@ -78,6 +78,12 @@ class ListingController extends AbstractController
                 $entityManager->persist($availability);
             }
 
+            foreach ($form->getData()->getListingPictures() as $pic) {
+                $listing->addPicture($pic);
+                $pic->setListing($listing);
+                $entityManager->persist($pic);
+            }
+
             $entityManager->persist($listing);
             
             $entityManager->flush();

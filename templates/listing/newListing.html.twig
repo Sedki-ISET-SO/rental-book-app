@@ -48,6 +48,15 @@
         >
         </ul>
         <br>
+
+        <label for="pictures">Pictures</label>
+        <ul class="pictures" 
+            data-index="{{ form.pictures|length > 0 ? form.pictures|last.vars.name + 1 : 0 }}" 
+            data-prototype="{{ form_widget(form.pictures.vars.prototype)|e('html_attr') }}"
+            style="list-style-type:none;"
+        >
+        </ul>
+        <br>
         
         {{ form_widget(form.enregistrer) }}
     {{ form_end(form) }} 
@@ -114,6 +123,38 @@
         }
 
         addTagLinkOne.addEventListener("click", addFormToCollectionOne)
+    </script>
+    <script>
+        const addTagLinkTwo = document.createElement('button')
+        addTagLinkTwo.classList.add('add_tag_list_2')
+        addTagLinkTwo.innerText = 'Add new pictures'
+        addTagLinkTwo.dataset.collectionHolderClass = 'pictures'
+
+        const newLinkLiTwo = document.createElement('li').append(addTagLinkTwo)
+
+        const collectionHolderTwo = document.querySelector('ul.pictures')
+        collectionHolderTwo.appendChild(addTagLinkTwo)
+
+        const addFormToCollectionTwo = (e) => {
+            e.preventDefault();
+            const collectionHolderTwo = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+            const item = document.createElement('li');
+
+            item.innerHTML = collectionHolderTwo
+                .dataset
+                .prototype
+                .replace(
+                /__name__/g,
+                collectionHolderTwo.dataset.index
+                );
+
+            collectionHolderTwo.appendChild(item);
+
+            collectionHolderTwo.dataset.index++;
+        }
+
+        addTagLinkTwo.addEventListener("click", addFormToCollectionTwo)
     </script>
     <style>
         .add_tag_list {

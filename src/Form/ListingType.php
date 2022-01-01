@@ -59,6 +59,16 @@ class ListingType extends AbstractType
                 'required' => true,
                 'label' => false
             ])
+            ->add('pictures', CollectionType::class, [
+                'entry_type' => ListingPictureType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'required' => false,
+                'label'=>false,
+                'by_reference' => false,
+                'disabled' => false,
+            ])
             ->add('enregistrer', SubmitType::class, [
                 "attr" => ["class" => "bg-danger text-white"],
                 'row_attr' => ['class' => 'text-center']

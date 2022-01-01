@@ -289,25 +289,25 @@ class Listing
      */
     public function getListingPictures(): Collection
     {
-        return $this->listingPictures;
+        return $this->pictures;
     }
 
-    public function addListingPicture(ListingPicture $listingPicture): self
+    public function addListingPicture(ListingPicture $pictures): self
     {
-        if (!$this->listingPictures->contains($listingPicture)) {
-            $this->listingPictures[] = $listingPicture;
-            $listingPicture->setListing($this);
+        if (!$this->pictures->contains($pictures)) {
+            $this->pictures[] = $pictures;
+            $pictures->setListing($this);
         }
 
         return $this;
     }
 
-    public function removeListingPicture(ListingPicture $listingPicture): self
+    public function removeListingPicture(ListingPicture $pictures): self
     {
-        if ($this->listingPictures->removeElement($listingPicture)) {
+        if ($this->pictures->removeElement($pictures)) {
             // set the owning side to null (unless already changed)
-            if ($listingPicture->getListing() === $this) {
-                $listingPicture->setListing(null);
+            if ($pictures->getListing() === $this) {
+                $pictures->setListing(null);
             }
         }
 

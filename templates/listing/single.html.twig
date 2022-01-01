@@ -15,8 +15,26 @@
             <p class="card-text">{{listing.description}}</p>
             <ul class="listingAmenities">
                 {% for amenity in listing.listingAmenities %}
-                    <li>{{ amenity.name }}</li>
-                    <li>{{ amenity.checked }}</li>
+                    {% if amenity.checked == true %}
+                        <li>provided amenities</li>
+                        <li>{{ amenity.name }}</li>
+                    {% elseif amenity.checked == false %}
+                        <li>not provided amenities</li>
+                        <li>{{ amenity.name }}</li>
+                    {% else %}
+                        <li>no amenities provided</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul class="listingAvailabilities">
+                {% for availability in listing.listingAvailabilities %}
+                    <li>Available from:{{ availability.availableFrom ? availability.availableFrom|date('d-m-Y H:i') : 'Not Available' }}</li>
+                    <li>Available until:{{ availability.availableUntil ? availability.availableUntil|date('d-m-Y H:i') : 'Not Available' }}</li>
+                {% endfor %}
+            </ul>
+            <ul class="pictures">
+                {% for pic in listing.pictures %}
+                    <li><img src="/uploads/{{ pic.name }}" width="400" height="auto"/></li>
                 {% endfor %}
             </ul>
         </div>
