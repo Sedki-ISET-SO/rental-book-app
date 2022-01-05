@@ -71,25 +71,30 @@ class Listing
     private $listingCategory;
 
     /**
-     * @ORM\OneToMany(targetEntity=ListingAmenity::class, mappedBy="listing")
+     * @ORM\OneToMany(targetEntity=ListingAmenity::class, mappedBy="listing", orphanRemoval=true)
      */
     private $listingAmenities;
 
     /**
-     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="listing")
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="listing", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      */
     private $ratings;
 
     /**
-     * @ORM\OneToMany(targetEntity=ListingPicture::class, mappedBy="listing")
+     * @ORM\OneToMany(targetEntity=ListingPicture::class, mappedBy="listing", orphanRemoval=true)
      */
     private $pictures;
 
     /**
-     * @ORM\OneToMany(targetEntity=ListingAvailability::class, mappedBy="listing")
+     * @ORM\OneToMany(targetEntity=ListingAvailability::class, mappedBy="listing", orphanRemoval=true)
      */
     private $listingAvailabilities;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Booking::class, mappedBy="listings", orphanRemoval=true)
+     */
+    private $bookings;
 
     public function __construct()
     {
@@ -97,6 +102,7 @@ class Listing
         $this->ratings = new ArrayCollection();
         $this->pictures = new ArrayCollection();
         $this->listingAvailabilities = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -377,5 +383,32 @@ class Listing
     public function __toString()
     {
     return (string) $this->listingCategory;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->addListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            $booking->removeListing($this);
+        }
+
+        return $this;
     }
 }

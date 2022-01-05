@@ -25,7 +25,7 @@ class ListingCategory
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Listing::class, mappedBy="listingCategory")
+     * @ORM\OneToMany(targetEntity=Listing::class, mappedBy="listingCategory", orphanRemoval=true)
      */
     private $listings;
 
